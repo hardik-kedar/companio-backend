@@ -46,12 +46,7 @@ connectDB();
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://trycompanio.in",
-      "https://www.trycompanio.in",
-      "https://companio-frontend.vercel.app"
-    ],
+    origin: true,
     credentials: true
   })
 );
