@@ -1,6 +1,4 @@
-
 // import cookieParser from "cookie-parser";
-
 // import express from "express";
 // import cors from "cors";
 // import helmet from "helmet";
@@ -12,11 +10,28 @@
 // import bookingRoutes from "./routes/booking.routes";
 // import userRoutes from "./routes/user.routes";
 // import adminRoutes from "./routes/admin.routes";
+
 // import { errorHandler } from "./middlewares/error.middleware";
 
 // const app = express();
 
-// app.use(helmet());
+// /*
+// ================================
+// SECURITY
+// ================================
+// */
+
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: false, // 🔥 allow Razorpay checkout
+//   })
+// );
+
+// /*
+// ================================
+// CORS
+// ================================
+// */
 
 // app.use(
 //   cors({
@@ -25,10 +40,34 @@
 //   })
 // );
 
-// app.use(express.json());
+// /*
+// ================================
+// BODY PARSER
+// ================================
+// */
 
-// // 🔥 ROUTES MUST COME AFTER express.json()
+// app.use(express.json());
 // app.use(cookieParser());
+
+// /*
+// ================================
+// RATE LIMIT
+// ================================
+// */
+
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 100,
+// });
+
+// app.use(limiter);
+
+// /*
+// ================================
+// ROUTES
+// ================================
+// */
+
 // app.use("/api/auth", authRoutes);
 // app.use("/api/payments", paymentRoutes);
 // app.use("/api/explore", exploreRoutes);
@@ -36,36 +75,29 @@
 // app.use("/api/user", userRoutes);
 // app.use("/api/admin", adminRoutes);
 
-// const limiter = rateLimit({
-//   windowMs: 15 * 60 * 1000,
-//   max: 100,
-// });
-// app.use(limiter);
+// /*
+// ================================
+// TEST ROUTES
+// ================================
+// */
 
 // app.get("/", (_req, res) => {
 //   res.send("Companio API running");
 // });
 
-
 // app.get("/test-user-route", (_req, res) => {
 //   res.send("User route is mounted");
 // });
 
-
-// app.use(helmet());
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000",
-//     credentials: true,
-//   })
-// );
-
-// app.use(express.json());
-// app.use(cookieParser());
+// /*
+// ================================
+// ERROR HANDLER
+// ================================
+// */
 
 // app.use(errorHandler);
-// export default app;
 
+// export default app;
 import cookieParser from "cookie-parser";
 import express from "express";
 import cors from "cors";
@@ -91,7 +123,7 @@ SECURITY
 
 app.use(
   helmet({
-    contentSecurityPolicy: false, // 🔥 allow Razorpay checkout
+    contentSecurityPolicy: false, // allow Razorpay checkout
   })
 );
 
@@ -101,9 +133,22 @@ CORS
 ================================
 */
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://trycompanio.in",
+  "https://www.trycompanio.in",
+  "https://companio-frontend.vercel.app",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
