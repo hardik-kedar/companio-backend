@@ -60,17 +60,7 @@ app.use(
 REGISTER ROUTES
 ================================
 */
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000",
-      "https://trycompanio.in",
-      "https://www.trycompanio.in",
-      "https://companio-frontend.vercel.app"
-    ],
-    credentials: true
-  })
-);
+
 app.use("/api/conversations", conversationRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/admin/disputes", adminDisputeRoutes);
