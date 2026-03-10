@@ -115,6 +115,8 @@ import { errorHandler } from "./middlewares/error.middleware";
 
 const app = express();
 
+app.set("trust proxy", 1); // IMPORTANT for Railway
+
 /*
 ================================
 SECURITY
