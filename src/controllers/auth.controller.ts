@@ -353,6 +353,9 @@ export const login = async (
         user.password
       );
 
+      console.log("Password entered:", password);
+console.log("Password in DB:", user.password);
+console.log("Match result:", match);
 
     if (!match) {
       return res.status(400).json({
