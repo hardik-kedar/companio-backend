@@ -363,7 +363,6 @@ console.log("Match result:", match);
       });
     }
 
-
     /*
     FIX: include role
     */
@@ -390,8 +389,8 @@ console.log("Match result:", match);
       token,
       {
         httpOnly: true,
-        sameSite: "lax",
-        secure: false
+        sameSite: "none",
+        secure: true
       }
     );
 
